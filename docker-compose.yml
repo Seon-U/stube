@@ -1,0 +1,19 @@
+services:
+  localdb:
+    container_name: stubedb
+    image: mysql:8.0
+    ports:
+      - 3308:3306
+    expose:
+      - 3308
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --log_bin_trust_function_creators=1
+      - --default-time-zone=Asia/Seoul
+
+    volumes:
+      - ./mysql:/var/lib/mysql
