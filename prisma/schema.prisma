@@ -23,9 +23,9 @@ model channel {
 model member {
   id         Int       @id @default(autoincrement())
   email      String    @unique(map: "email_UNIQUE") @db.VarChar(255)
-  googleId   String    @unique(map: "google_user_id_UNIQUE") @db.VarChar(255)
+  googleId   String?   @unique(map: "google_user_id_UNIQUE") @db.VarChar(255)
   nickname   String?   @db.VarChar(45)
-  profileImg String?   @db.VarChar(45)
+  profileImg String?   @db.VarChar(255)
   createdAt  DateTime? @default(now()) @db.DateTime(0)
   updatedAt  DateTime? @default(now()) @db.Timestamp(0)
   outdt      DateTime? @db.DateTime(0)
