@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   const session = await auth();
 
   const target = await req.nextUrl.searchParams.get("target");
-  const authorization = req.headers.get("authorization");
+  // const authorization = req.headers.get("authorization");
 
   //QQQ: internal_secret is undefined yet
   //first checking code
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
 
   //No user on session
   if (!session || !session?.accessToken) {
-    console.log("Unauthorized User");
+    return console.log("Unauthorized User");
     // return NextResponse.json({ error: "Unauthorized User" }, { status: 401 });
   }
 

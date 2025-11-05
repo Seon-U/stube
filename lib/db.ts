@@ -14,8 +14,9 @@ export const findMemberByEmail = async (
     select: {
       id: true,
       email: true,
-      nickname: true,
-      profileImg: true,
+      name: true,
+      image: true,
+      googleId: true,
     },
     where: { email },
   });

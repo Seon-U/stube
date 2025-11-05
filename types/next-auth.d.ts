@@ -5,6 +5,10 @@ declare module "next-auth" {
   interface Session {
     accessToken: string;
   }
+
+  interface User {
+    googleId: string;
+  }
 }
 
 declare module "next-auth/jwt" {
