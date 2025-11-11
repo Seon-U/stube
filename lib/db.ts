@@ -21,7 +21,17 @@ export const findMemberByEmail = async (
     where: { email },
   });
 
-// //TODO: 로그인 정보 db저장하기
+export const findChannelByAPiId = async (
+  channelId: string,
+  isIncludePasswd: boolean = false
+) =>
+  prisma.channel.findUnique({
+    select: {
+      id: true,
+    },
+    where: { channel_api_id: channelId },
+  });
+
 // export const saveMember = async ({
 //   email,
 //   googleId,

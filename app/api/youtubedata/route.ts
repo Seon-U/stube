@@ -1,7 +1,11 @@
 import type { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
-import { getPlaylistById, getVideosById } from "@/lib/youtube";
-import { getChannelById } from "@/lib/youtube.action";
+// import { getPlaylistById, getVideosById } from "@/lib/youtube";
+import {
+  getChannelByToken,
+  getPlaylistByToken,
+  getPlaylistItemsByToken,
+} from "@/lib/youtube.action";
 
 // export type youtubeApiRequest = {
 //   target: "channel" | "playlist" | "video";
@@ -30,23 +34,26 @@ export async function GET(req: NextRequest) {
 
   try {
     target === "channel"
-      ? getChannelById({ accessToken: session?.accessToken || "" })
+      ? getChannelByToken(session?.accessToken || "")
       : target === "playlist"
-        ? getPlaylistById()
-        : getVideosById();
+        ? getPlaylistByToken(session?.accessToken || "")
+        : getPlaylistItemsByToken({
+            accessToken: session?.accessToken || "",
+            playlistId: session.user?.googleId || "",
+          });
   } catch (error) {
     return console.log(error);
     // return NextResponse.json({ error: error }, { status: 500 });
   }
 }
 
-export async function SET(request: NextRequest) {}
+// export async function SET(request: NextRequest) {}
 
-export async function POST(request: NextRequest) {}
+// export async function POST(request: NextRequest) {}
 
-export async function PUT(request: NextRequest) {}
+// export async function PUT(request: NextRequest) {}
 
-export async function DELETE(request: NextRequest) {}
+// export async function DELETE(request: NextRequest) {}
 
 //끌고 올 데이터 타입을 정의하기
 //이거 그냥 channel orm 연결하면 안되나?

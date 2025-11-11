@@ -1,9 +1,17 @@
-import "./google-login-button.css";
+"use client";
 
+import { signIn } from "next-auth/react";
+import "./google-login-button.css";
 export default function GoogleLoginButton() {
   return (
     <div className="">
-      <button type="submit" className="gsi-material-button">
+      <button
+        type="submit"
+        className="gsi-material-button"
+        onClick={() => {
+          signIn("google", { redirectTo: "/" });
+        }}
+      >
         <div className="gsi-material-button-state"></div>
         <div className="gsi-material-button-content-wrapper">
           <div className="gsi-material-button-icon">
