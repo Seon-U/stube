@@ -1,8 +1,8 @@
 import Player from "./player";
 
 type Props = {
-  title?: string;
-  description?: string;
+  title: string | null;
+  description: string | null;
 };
 
 export default function PlayerSection({ title, description }: Props) {

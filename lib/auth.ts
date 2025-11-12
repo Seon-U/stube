@@ -193,7 +193,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(async (req) => {
 
         //? 그냥 강제로 as String주면 안되는지 고민해보기
         if (token) {
-          session.userId = token.id as string;
+          session.user.id = token.id;
           session.user.email = token.email ?? "";
           session.user.image = token.picture;
           session.user.name = token.name;

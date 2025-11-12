@@ -2,29 +2,40 @@ import Image from "next/image";
 import { Button } from "./ui/button";
 
 type VideoButtonProps = {
-  id: string;
-  duration: string;
-  title: string;
-  description: string;
+  title: string | null;
+  description: string | null;
+  thumbnailUrl: string | null;
 };
 
-export default function VideoButton({ title, description }: VideoButtonProps) {
+export default function VideoButton({
+  title,
+  description,
+  thumbnailUrl,
+}: VideoButtonProps) {
+  const videoTitle = title ?? "no name";
+  const resolvedDescription =
+    description ?? "추후 DB에서 설명을 불러올 예정입니다.";
+  const resolvedThumbnail =
+    thumbnailUrl ?? "https://i.ytimg.com/vi/EvOPoQrtFGI/default.jpg";
+
   return (
-    <Button className="flex w-full h-full items-start gap-3 rounded-2xl border border-slate-100 bg-slate-50/80 p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-slate-200 hover:bg-white">
-      <Image
-        src={"https://i.ytimg.com/vi/EvOPoQrtFGI/default.jpg"}
-        width={100}
-        height={100}
-        alt="videoThumbnail"
-      />
-      <div className="flex flex-1 flex-col">
-        <p className="text-sm font-semibold text-slate-900">{title}</p>
-        <p className="text-xs text-slate-500">
-          {description ?? "description text"}
+    <Button className="flex h-full w-full justify-start gap-3 rounded-2xl border border-slate-100 bg-slate-50/80 p-3 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-slate-200 hover:bg-white">
+      <div className="relative h-16 w-24 shrink-0 overflow-hidden rounded-xl border border-slate-100">
+        <Image
+          src={resolvedThumbnail}
+          fill
+          alt="videoThumbnail"
+          className="object-cover"
+          sizes="96px"
+        />
+      </div>
+      <div className="flex flex-col min-w-0">
+        <h1 className="truncate text-sm font-semibold text-slate-900 whitespace-nowrap">
+          {videoTitle}
+        </h1>
+        <p className="max-w-[80%] truncate text-xs text-slate-500 whitespace-nowrap">
+          {resolvedDescription}
         </p>
-        {/* <div className="mt-2 flex items-center justify-between text-xs text-slate-500">
-          <span>{description ?? "아무거나 일단 입력해봄"}</span>
-        </div> */}
       </div>
     </Button>
   );
