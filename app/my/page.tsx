@@ -1,14 +1,16 @@
-import { LogOutIcon } from "lucide-react";
 import { redirect } from "next/navigation";
-import { signOut } from "next-auth/react";
 import { use } from "react";
-import { Button } from "@/components/ui/button";
-import { auth } from "@/lib/auth";
+import { auth, signOut } from "@/lib/auth";
+import LogOutButton from "./logout-button";
 
 export default function My() {
   const session = use(auth());
   if (!session?.user?.name) redirect("/sign");
   const { name, image } = session.user;
+  const logout = async () => {
+    console.log("enter logout");
+    await signOut();
+  };
   return (
     <div>
       <div className="flex">
@@ -16,10 +18,7 @@ export default function My() {
         <h1>{name}</h1>
       </div>
       <div className="flex">
-        <Button onClick={() => signOut({ redirect: false })}>
-          <LogOutIcon />
-          Sign out
-        </Button>
+        <LogOutButton />
       </div>
     </div>
   );
