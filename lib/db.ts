@@ -34,7 +34,7 @@ export const findChannelByAPiId = async (
 
 /*중첩 include처리용 함수
  */
-const includedData = (keys: string[]): {} => {
+const includedData = (keys: string[]): any => {
   if (keys.length === 0) {
     return true;
   }
