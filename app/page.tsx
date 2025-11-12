@@ -1,9 +1,9 @@
 import { use } from "react";
 import PlayerSection from "@/components/player-section";
 import PlaylistAccordian from "@/components/playlist-accordian";
-import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/auth";
 import { getPlaylistAndVideo } from "@/lib/db";
+import NextVideo from "./next-video";
 
 const DummyPlaylists = [
   {
@@ -67,19 +67,37 @@ const DummyPlaylists = [
   },
 ];
 
-// const getPlaylist = async (id: number) => {
-//   const [{ channel }] = await getPlaylistAndVideo(id);
-//   return channel[0].playlist;
-// };
+type PageProps = {
+  searchParams: Promise<{
+    playlistId?: string;
+    videoId?: string;
+  }>;
+};
 
-export default function Home() {
+export default function Home({ searchParams }: PageProps) {
   const session = use(auth());
   // if (!session?.user) redirect("/sign");
+
+  const { playlistId, videoId } = use(searchParams);
   const { id, name } = session?.user ?? { id: 1, name: "seo" };
   const [{ channel }] = use(getPlaylistAndVideo(id));
   const playlists = channel[0].playlist;
-  const currentPlaylist = playlists[0];
-  const currentVideo = playlists[0].video[1];
+
+  let currentPlaylist = playlists[0];
+  let currentVideo = playlists[0].video[1];
+
+  if (playlistId && videoId) {
+    const foundPlaylist = playlists.find((p) => p.id === Number(playlistId));
+    if (foundPlaylist) {
+      currentPlaylist = foundPlaylist;
+      const foundVideo = foundPlaylist.video.find(
+        (v) => v.id === Number(videoId)
+      );
+      if (foundVideo) {
+        currentVideo = foundVideo;
+      }
+    }
+  }
 
   return (
     <div className="w-full min-h-screen bg-slate-100 py-10">
@@ -95,22 +113,9 @@ export default function Home() {
           </div>
 
           <div className="rounded-3xl border border-slate-200 bg-white p-5 shadow-lg">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div>
-                <p className="text-xs uppercase tracking-wide text-slate-400">
-                  큐시트
-                </p>
-                <p className="text-base font-semibold text-slate-900">
-                  {playlists[0].video[1].title ?? "재생할 영상이 없습니다"}
-                </p>
-              </div>
-              <Button
-                className="rounded-full border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-slate-300"
-                variant="ghost"
-              >
-                바로 재생하기
-              </Button>
-            </div>
+            <NextVideo
+              nextVideo={currentPlaylist.video[currentVideo.position + 1]}
+            />
           </div>
         </section>
 
@@ -122,7 +127,11 @@ export default function Home() {
               </p>
               <p className="text-lg font-semibold text-slate-900">Playlist</p>
             </div>
-            <PlaylistAccordian playlist={playlists} />
+            <PlaylistAccordian
+              playlist={playlists}
+              currentPlaylistId={currentPlaylist.id}
+              currentVideoId={currentVideo.id}
+            />
           </div>
         </aside>
       </div>

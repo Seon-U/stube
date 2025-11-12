@@ -6,22 +6,31 @@ import {
 } from "./ui/accordion";
 import VideoButton from "./video-button";
 
-type Props = {
-  playlist: {
+type Playlist = {
+  id: number;
+  description: string | null;
+  title: string;
+  video: {
     id: number;
     description: string | null;
-    title: string;
-    video: {
-      id: number;
-      description: string | null;
-      title: string | null;
-      thumbnailUrl: string | null;
-      position: number;
-      videoApiId: string;
-    }[];
+    title: string | null;
+    thumbnailUrl: string | null;
+    position: number;
+    videoApiId: string;
   }[];
 };
-export default function PlaylistAccordian({ playlist: playlists }: Props) {
+
+type Props = {
+  playlist: Playlist[];
+  currentVideoId: number;
+  currentPlaylistId: number;
+};
+
+export default function PlaylistAccordian({
+  playlist: playlists,
+  // currentPlaylistId,
+  currentVideoId,
+}: Props) {
   return (
     <Accordion type="single" collapsible className="divide-y divide-slate-100">
       {playlists.map((playlist) => (
@@ -39,9 +48,17 @@ export default function PlaylistAccordian({ playlist: playlists }: Props) {
             </div>
           </AccordionTrigger>
           <AccordionContent className="space-y-3 pb-5 pt-3 overflow-visible">
-            {playlist.video.map((video) => (
-              <VideoButton key={video.id} {...video} />
-            ))}
+            <div className="max-h-100 overflow-y-auto sticky">
+              {playlist.video.map((video) => (
+                <VideoButton
+                  key={video.id}
+                  playlistId={playlist.id}
+                  videoId={video.id}
+                  isActive={currentVideoId === video.id}
+                  {...video}
+                />
+              ))}
+            </div>
           </AccordionContent>
         </AccordionItem>
       ))}
