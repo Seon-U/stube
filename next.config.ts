@@ -5,4 +5,10 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
 };
 
+module.exports = {
+  images: {
+    domains: ["avatar.vercel.sh"],
+  },
+};
+
 export default nextConfig;
