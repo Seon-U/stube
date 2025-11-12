@@ -1,4 +1,4 @@
-export default function Player({ videoId }: { videoId?: string }) {
+export default function Player({ videoId }: { videoId: string | null }) {
   const videoUrl = `https://www.youtube.com/embed/${videoId}`;
   const isVideo = !!videoId;
   // 영상 id를 전달받아서 해당 url로 영상을 재생하는 컴포넌트
