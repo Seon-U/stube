@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
 
 module.exports = {
   images: {
-    domains: ["avatar.vercel.sh"],
+    domains: ["avatar.vercel.sh", "i.ytimg.com"],
   },
 };
 
