@@ -1,7 +1,7 @@
+import { auth } from "@/lib/auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 import { use } from "react";
-import { auth } from "@/lib/auth";
 import LogOutButton from "./logout-button";
 
 export default function My() {
