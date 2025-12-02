@@ -26,6 +26,13 @@ type Props = {
   currentPlaylistId: number;
 };
 
+/**
+ * Render an accordion listing playlists where each playlist expands to show its videos.
+ *
+ * @param playlists - Array of playlists to display; each playlist's videos are rendered as individual video buttons.
+ * @param currentVideoId - ID of the currently active video; the corresponding video button is marked active.
+ * @returns The rendered accordion element containing playlist items and their videos.
+ */
 export default function PlaylistAccordian({
   playlist: playlists,
   // currentPlaylistId,
