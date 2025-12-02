@@ -63,6 +63,13 @@ type channelApiReturn =
   | { success: true; items: channelItems[] }
   | { success: false; error: youtubeApiError };
 
+/**
+ * Fetches the YouTube channels owned by the authenticated user using the provided OAuth access token.
+ *
+ * Requests the channels endpoint with pagination and accumulates all returned channel items. On error returns a structured error with an HTTP-like status and message.
+ *
+ * @returns `{ success: true, items: channelItems[] }` containing all retrieved channels on success; `{ success: false, error: { message: string, status: number } }` on failure.
+ */
 export async function getChannelByToken(
   accessToken: string
 ): Promise<channelApiReturn> {
@@ -154,6 +161,12 @@ type playlistApiReturn =
     }
   | { success: false; error: youtubeApiError };
 
+/**
+ * Retrieves playlists owned by the authenticated user, handling pagination.
+ *
+ * @param accessToken - OAuth 2.0 Bearer token for the YouTube account used to authenticate requests
+ * @returns An object with `success: true` and `items` containing playlist entries when successful; otherwise `success: false` and `error` containing `message` and `status`
+ */
 export async function getPlaylistByToken(
   accessToken: string
 ): Promise<playlistApiReturn> {
@@ -251,6 +264,13 @@ type PlaylistItemsReturn =
     }
   | { success: false; error: youtubeApiError };
 
+/**
+ * Fetches all items from the specified YouTube playlist using the provided user access token and follows pagination until all pages are retrieved.
+ *
+ * @param accessToken - OAuth 2.0 Bearer token used to authorize requests to the YouTube Data API
+ * @param playlistId - ID of the playlist whose items should be retrieved
+ * @returns On success, `{ success: true, items }` where `items` is an array of `playlistListItem`; on failure, `{ success: false, error }` where `error` contains `message` and HTTP `status`
+ */
 export async function getPlaylistItemsByToken({
   accessToken,
   playlistId,

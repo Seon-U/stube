@@ -4,6 +4,13 @@ import { redirect } from "next/navigation";
 import { use } from "react";
 import LogOutButton from "./logout-button";
 
+/**
+ * Renders the authenticated user's profile page with avatar, display name, and a logout control.
+ *
+ * If the current session has no user name, the function redirects the client to "/sign".
+ *
+ * @returns A JSX element containing a centered profile image (using the user's `image` or a generated avatar URL), a header showing `user {name}`, and a LogOutButton.
+ */
 export default function My() {
   const session = use(auth());
   if (!session?.user?.name) redirect("/sign");
