@@ -5,4 +5,10 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
 };
 
+module.exports = {
+  images: {
+    domains: ["avatar.vercel.sh", "i.ytimg.com", "lh3.googleusercontent.com"],
+  },
+};
+
 export default nextConfig;

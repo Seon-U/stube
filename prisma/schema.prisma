@@ -1,0 +1,74 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider          = "mysql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model channel {
+  id             Int        @id @default(autoincrement())
+  channel_api_id String     @unique @db.VarChar(255)
+  memberId       Int
+  accessToken    String?    @db.VarChar(255)
+  channelThumb   String?
+  description    String?
+  expiresAt      DateTime?
+  lastSelected   Boolean
+  refreshToken   String?
+  title          String?
+  member         member     @relation(fields: [memberId], references: [id], onDelete: Cascade, map: "fk_member_channel")
+  playlist       playlist[]
+
+  @@index([memberId], map: "fk_member_channel")
+  @@index([id], map: "id_idx")
+}
+
+model member {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique(map: "email_UNIQUE") @db.VarChar(255)
+  googleId  String?   @unique(map: "google_user_id_UNIQUE") @db.VarChar(255)
+  createdAt DateTime? @default(now()) @db.DateTime(0)
+  updatedAt DateTime? @default(now()) @db.Timestamp(0)
+  outdt     DateTime? @db.DateTime(0)
+  image     String?   @db.VarChar(255)
+  name      String?   @db.VarChar(45)
+  channel   channel[]
+}
+
+model playlist {
+  id            Int       @id @default(autoincrement())
+  playlistApiId String    @unique @db.VarChar(255)
+  channelId     Int
+  title         String    @db.Text
+  description   String?   @db.Text
+  itemCount     Int?
+  publishedAt   DateTime? @db.DateTime(0)
+  createdAt     DateTime? @db.Timestamp(0)
+  creatorId     String?   @db.VarChar(255)
+  channel       channel   @relation(fields: [channelId], references: [id], onDelete: Cascade, map: "fk_channel_playlist")
+  video         video[]
+
+  @@index([channelId], map: "channelId_idx")
+}
+
+model video {
+  id           Int       @id @default(autoincrement())
+  playlistId   Int
+  title        String?   @db.Text
+  description  String?   @db.Text
+  thumbnailUrl String?   @db.VarChar(255)
+  creatorId    String?   @db.VarChar(255)
+  publishedAt  DateTime? @db.DateTime(0)
+  createdAt    DateTime? @db.DateTime(0)
+  updatedAt    DateTime? @db.DateTime(0)
+  listApiId    String    @unique
+  position     Int
+  videoApiId   String    
+  playlist     playlist  @relation(fields: [playlistId], references: [id], onDelete: Cascade, map: "fk_playlist_video")
+
+  @@index([playlistId], map: "id_idx")
+}

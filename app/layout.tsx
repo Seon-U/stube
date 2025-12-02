@@ -1,6 +1,9 @@
+import { Videotape } from "lucide-react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
 import "./globals.css";
+import Nav from "./nav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +30,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <div className="flex h-screen flex-col justify-center">
+          <header className="flex justify-between border-b-1 px-2">
+            <Link
+              href={"/"}
+              className="flex items-center font-semibold text-3xl tracking-tight"
+            >
+              <Videotape color="#ff0000" size={28} /> Stube
+            </Link>
+            <Nav />
+          </header>
+          <main className="flex-1 overflow-auto">{children}</main>
+          <footer className="text-center">&#169; seonu 2025</footer>
+        </div>
       </body>
     </html>
   );
