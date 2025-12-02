@@ -2,6 +2,12 @@
 
 import GoogleLoginButton from "./components/google-login-button";
 
+/**
+ * Render a full-screen, centered sign-in form with explanatory text, a Google login button, and an optional error message.
+ *
+ * @param errorMessage - A string or array of strings to display as an error message beneath the login button; if `undefined`, no error is shown.
+ * @returns A React element containing the sign-in form UI.
+ */
 export default function SignForm({
   errorMessage,
 }: {

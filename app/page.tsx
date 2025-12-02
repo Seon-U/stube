@@ -13,6 +13,14 @@ type PageProps = {
   }>;
 };
 
+/**
+ * Render the authenticated user's playlist page with a video player, next-video preview, and playlist sidebar.
+ *
+ * Renders the PlayerSection for the selected video, a NextVideo panel for the subsequent video in the current playlist, and a PlaylistAccordian showing available playlists. If the user is not authenticated the function redirects to "/sign". When `searchParams` provides `playlistId` and `videoId`, the corresponding playlist and video are selected; otherwise the page falls back to the first playlist and its second video.
+ *
+ * @param searchParams - A promise resolving to an object that may contain `playlistId` and `videoId` query values used to preselect a playlist and video.
+ * @returns The page's JSX element containing the player, next-video preview, and playlist sidebar.
+ */
 export default function Home({ searchParams }: PageProps) {
   const session = use(auth());
   if (!session?.user) redirect("/sign");

@@ -7,6 +7,19 @@ type Props = {
   description: string | null;
 };
 
+/**
+ * Render a video player with an accompanying info panel showing the current playlist, video title, and description.
+ *
+ * The component renders a Player for `videoId` and a details panel that displays the playlist title, the video title
+ * (falls back to "No video found" when `title` is null), and the video description (falls back to
+ * "Please select your video from playlist" when `description` is null).
+ *
+ * @param videoId - The ID of the video to play; passed directly to the Player component.
+ * @param playlistTitle - The name of the current playlist to display above the title; may be null.
+ * @param title - The video title to display; when `null` the UI shows "No video found".
+ * @param description - The video description to display; when `null` the UI shows "Please select your video from playlist".
+ * @returns A JSX element containing the Player and the textual info panel.
+ */
 export default function PlayerSection({
   videoId,
   playlistTitle,

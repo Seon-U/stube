@@ -12,6 +12,17 @@ type VideoButtonProps = {
   isActive?: boolean;
 };
 
+/**
+ * Renders a clickable video item (thumbnail, title, and description) that updates the current page's query string with the provided playlist and video IDs when clicked.
+ *
+ * @param title - The video's title; uses "no name" when null.
+ * @param description - The video's description; uses a placeholder Korean message when null.
+ * @param thumbnailUrl - URL for the video's thumbnail; falls back to a default YouTube thumbnail when null.
+ * @param playlistId - Numeric identifier for the playlist to set in the query string.
+ * @param videoId - Numeric identifier for the video to set in the query string.
+ * @param isActive - Optional flag indicating active state; defaults to `false`.
+ * @returns A JSX button element representing the video item that navigates by updating the URL search parameters for `playlistId` and `videoId`.
+ */
 export default function VideoButton({
   title,
   description,

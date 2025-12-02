@@ -16,6 +16,12 @@ type Props = {
   nextVideo: video;
 };
 
+/**
+ * Render a UI block that displays the next video's title and a button which sets the current `videoId` query parameter to that video's `id`.
+ *
+ * @param nextVideo - The next video to display (fields include `id` and `title`); when `title` is null, a fallback label is shown.
+ * @returns A React element containing the video label/title and a "바로 재생하기" button that updates the URL query to play the video.
+ */
 export default function NextVideo({ nextVideo }: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
