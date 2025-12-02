@@ -2,6 +2,11 @@
 
 import { signIn } from "next-auth/react";
 import "./google-login-button.css";
+/**
+ * Render a Google sign-in button that initiates authentication via NextAuth.
+ *
+ * @returns A JSX element containing a styled Google sign-in button which calls `signIn("google", { redirectTo: "/" })` when clicked.
+ */
 export default function GoogleLoginButton() {
   return (
     <div className="">

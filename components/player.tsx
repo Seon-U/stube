@@ -1,3 +1,9 @@
+/**
+ * Render a YouTube embed when given a video ID or a placeholder prompting selection.
+ *
+ * @param videoId - The YouTube video ID to embed; pass `null` or an empty value to show the placeholder UI
+ * @returns The component's React element tree showing an iframe for the provided video ID or a "No Video Found / Select the Video" placeholder when no ID is provided
+ */
 export default function Player({ videoId }: { videoId: string | null }) {
   const videoUrl = `https://www.youtube.com/embed/${videoId}`;
   const isVideo = !!videoId;
