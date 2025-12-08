@@ -10,7 +10,6 @@ import {
 const MAX_AGE = 60 * 60 * 24;
 
 export const { handlers, auth, signIn, signOut } = NextAuth(async (req) => {
-  console.log("Auth:req >>>", req);
   return {
     providers: [
       Google({
