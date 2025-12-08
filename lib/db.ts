@@ -1,14 +1,22 @@
 import { PrismaClient } from "@/lib/generated/prisma/client";
 
 //TODO: 싱글톤으로 교체하기
-const prisma = new PrismaClient();
+
+const newInstance = () => new PrismaClient();
+
+// biome-ignore lint/suspicious/noShadowRestrictedNames: for too many connecting problem
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof newInstance>;
+} & typeof global;
+
+const prisma = globalThis.prismaGlobal ?? newInstance();
 
 export default prisma;
 
 //TODO: 중복 id체크하기
 export const findMemberByEmail = async (
   email: string,
-  isIncludePasswd: boolean = false
+  isIncludePasswd: boolean = false,
 ) =>
   prisma.member.findUnique({
     select: {
@@ -23,7 +31,7 @@ export const findMemberByEmail = async (
 
 export const findChannelByAPiId = async (
   channelId: string,
-  isIncludePasswd: boolean = false
+  isIncludePasswd: boolean = false,
 ) =>
   prisma.channel.findUnique({
     select: {

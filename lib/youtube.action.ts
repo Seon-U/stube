@@ -6,23 +6,34 @@ const PlaylistItemEndPoint =
   "https://www.googleapis.com/youtube/v3/playlistItems";
 const VideoEndPoint = "https://www.googleapis.com/youtube/v3/videos";
 
+/**
+ * yotube api reaturn
+ * all the api return will be handle by one type
+ *
+ */
+
+type youtubeApiError = {
+  message: string;
+  status: number;
+  raw?: any;
+};
+
+type youtubeApiReturn<T> =
+  | {
+      success: true;
+      items: T;
+    }
+  | {
+      success: false;
+      error: youtubeApiError;
+    };
+
 type QueryParams = {
   part: Array<string>;
   id?: string;
   maxResults?: number;
   q?: string;
 };
-
-//body정의
-//body정의를 통해서 channel 가지고 오는 fetch funciton
-
-// curl \
-//   'https://youtube.googleapis.com/youtube/v3/channels?part=snippet%2CcontentDetails%2Cstatistics&id=UC_x5XG1OV2P6uZZ5FSM9Ttw&key=[YOUR_API_KEY]' \
-//   --header 'Authorization: Bearer [YOUR_ACCESS_TOKEN]' \
-//   --header 'Accept: application/json' \
-//   --compressed
-
-// NextResponse.json({ error: "Unauthorized User" }, { status: 401 });
 
 type channelAPiError = {
   error: {
@@ -54,11 +65,6 @@ type channelItems = {
   };
 };
 
-type youtubeApiError = {
-  message: string;
-  status: number;
-};
-
 type channelApiReturn =
   | { success: true; items: channelItems[] }
   | { success: false; error: youtubeApiError };
@@ -71,7 +77,7 @@ type channelApiReturn =
  * @returns `{ success: true, items: channelItems[] }` containing all retrieved channels on success; `{ success: false, error: { message: string, status: number } }` on failure.
  */
 export async function getChannelByToken(
-  accessToken: string
+  accessToken: string,
 ): Promise<channelApiReturn> {
   if (!accessToken) {
     return {
@@ -82,6 +88,7 @@ export async function getChannelByToken(
       },
     };
   }
+
   const MAX_RESULT = 50;
   const API_PARTS = "id,snippet,contentDetails";
   const { YOUTUBE_API_KEY } = process.env;
@@ -168,7 +175,7 @@ type playlistApiReturn =
  * @returns An object with `success: true` and `items` containing playlist entries when successful; otherwise `success: false` and `error` containing `message` and `status`
  */
 export async function getPlaylistByToken(
-  accessToken: string
+  accessToken: string,
 ): Promise<playlistApiReturn> {
   //playlist:list 활용
   if (!accessToken) {

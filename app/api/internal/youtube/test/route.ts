@@ -1,23 +1,25 @@
+import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import {
   getChannelByToken,
   getPlaylistByToken,
   getPlaylistItemsByToken,
 } from "@/lib/youtube.action";
-import { NextRequest, NextResponse } from "next/server";
 
-
-
-/*
-* how to test api
-* just use the endPoint inside
-* `${process.env.NEXT_PUBLIC_URL}/api/internal/youtube/test?target=${target}`
-* outside example path will be like that
-* http://localhost:3001/api/internal/youtube/test?target=channel
-*/
+/**
+ * how to test api
+ * just use the endPoint inside
+ * `${process.env.NEXT_PUBLIC_URL}/api/internal/youtube/test?target=${target}`
+ * outside example path will be like that
+ * http://localhost:3001/api/internal/youtube/test?target=channel
+ */
 export async function GET(req: NextRequest) {
-  if (process.env.NODE_ENV === "production") return NextResponse.json({error: "Test endpoint not available in production"}, {status: 403})
-    process.env.NEXT_PUBLIC_URL
+  if (process.env.NODE_ENV === "production")
+    return NextResponse.json(
+      { error: "Test endpoint not available in production" },
+      { status: 403 },
+    );
+  process.env.NEXT_PUBLIC_URL;
   const session = await auth();
   const target = await req.nextUrl.searchParams.get("target");
   const playlistId = req.nextUrl.searchParams.get("playlistId");
@@ -36,7 +38,7 @@ export async function GET(req: NextRequest) {
     const startTime = Date.now();
 
     switch (target) {
-      case "channel": 
+      case "channel":
         console.log("Testing getChannelByToken...");
         result = await getChannelByToken(session.accessToken);
         break;
@@ -47,17 +49,27 @@ export async function GET(req: NextRequest) {
         break;
 
       case "playlistItems":
-        console.log("Testing getPlaylist Items...")
+        console.log("Testing getPlaylist Items...");
         if (!playlistId) {
-          return NextResponse.json({success: false, error: "playlistId parameter required"}, {status: 400})
-        } else result = await getPlaylistItemsByToken({accessToken: session.accessToken, playlistId});
+          return NextResponse.json(
+            { success: false, error: "playlistId parameter required" },
+            { status: 400 },
+          );
+        } else
+          result = await getPlaylistItemsByToken({
+            accessToken: session.accessToken,
+            playlistId,
+          });
         break;
 
       default:
-        return NextResponse.json({success: false, error: "Invalid target"}, {status: 400})
+        return NextResponse.json(
+          { success: false, error: "Invalid target" },
+          { status: 400 },
+        );
     }
     const duration = Date.now() - startTime;
-    console.log(`Test completed in ${duration}ms`)
+    console.log(`Test completed in ${duration}ms`);
     if (result.success) {
       console.log(`Success, Found ${result.items.length} items`);
 
@@ -66,28 +78,34 @@ export async function GET(req: NextRequest) {
         target,
         itemCount: result.items.length,
         duration: `${duration}ms`,
-        sampleData: result.items.slice(0,3),
+        sampleData: result.items.slice(0, 3),
         allData: result.items,
-      })
+      });
     } else {
       console.error("Test failed:", result.error);
 
-      return NextResponse.json({
-        success: false,
-        error: result.error,
-        duration: `${duration}ms`,
-      }, {status: result.error.status || 500})
+      return NextResponse.json(
+        {
+          success: false,
+          error: result.error,
+          duration: `${duration}ms`,
+        },
+        { status: result.error.status || 500 },
+      );
     }
   } catch (error) {
-    console.error("Test endpoint error:", error)
-    
-    return NextResponse.json({
-      success: false,
-      error: "Internal server error",
-      details: error instanceof Error ? error.message : String(error),
-    }, {
-      status: 500
-    })
+    console.error("Test endpoint error:", error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : String(error),
+      },
+      {
+        status: 500,
+      },
+    );
   }
 }
 
@@ -98,4 +116,3 @@ export async function GET(req: NextRequest) {
 // export async function PUT(request: NextRequest) {}
 
 // export async function DELETE(request: NextRequest) {}
-
