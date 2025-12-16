@@ -11,7 +11,6 @@ const VideoEndPoint = "https://www.googleapis.com/youtube/v3/videos";
  * all the api return will be handle by one type
  *
  */
-
 type youtubeApiError = {
   message: string;
   status: number;
