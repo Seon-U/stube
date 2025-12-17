@@ -12,16 +12,17 @@ const VideoEndPoint = "https://www.googleapis.com/youtube/v3/videos";
  *
  */
 
+
 type youtubeApiError = {
   message: string;
   status: number;
   raw?: any;
 };
 
-type youtubeApiReturn<T> =
+export type youtubeApiReturn<T> =
   | {
       success: true;
-      items: T;
+      items: T[];
     }
   | {
       success: false;
@@ -65,10 +66,6 @@ type channelItems = {
   };
 };
 
-type channelApiReturn =
-  | { success: true; items: channelItems[] }
-  | { success: false; error: youtubeApiError };
-
 /**
  * Fetches the YouTube channels owned by the authenticated user using the provided OAuth access token.
  *
@@ -78,7 +75,7 @@ type channelApiReturn =
  */
 export async function getChannelByToken(
   accessToken: string,
-): Promise<channelApiReturn> {
+): Promise<youtubeApiReturn<channelItems>> {
   if (!accessToken) {
     return {
       success: false,
@@ -161,13 +158,6 @@ type PlaylistItem = {
   };
 };
 
-type playlistApiReturn =
-  | {
-      success: true;
-      items: PlaylistItem[];
-    }
-  | { success: false; error: youtubeApiError };
-
 /**
  * Retrieves playlists owned by the authenticated user, handling pagination.
  *
@@ -176,7 +166,7 @@ type playlistApiReturn =
  */
 export async function getPlaylistByToken(
   accessToken: string,
-): Promise<playlistApiReturn> {
+): Promise<youtubeApiReturn<PlaylistItem>> {
   //playlist:list 활용
   if (!accessToken) {
     return {
@@ -264,13 +254,6 @@ type playlistListItem = {
   };
 };
 
-type PlaylistItemsReturn =
-  | {
-      success: true;
-      items: playlistListItem[];
-    }
-  | { success: false; error: youtubeApiError };
-
 /**
  * Fetches all items from the specified YouTube playlist using the provided user access token and follows pagination until all pages are retrieved.
  *
@@ -284,7 +267,7 @@ export async function getPlaylistItemsByToken({
 }: {
   accessToken: string;
   playlistId: string;
-}): Promise<PlaylistItemsReturn> {
+}): Promise<youtubeApiReturn<playlistListItem>> {
   //playlist-Item API활용
   //playlist:list 활용
   if (!accessToken) {

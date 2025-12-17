@@ -4,6 +4,7 @@ import {
   getChannelByToken,
   getPlaylistByToken,
   getPlaylistItemsByToken,
+  type youtubeApiReturn,
 } from "@/lib/youtube.action";
 
 /**
@@ -34,7 +35,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let result;
+    let result: youtubeApiReturn<unknown>;
     const startTime = Date.now();
 
     switch (target) {
@@ -70,6 +71,7 @@ export async function GET(req: NextRequest) {
     }
     const duration = Date.now() - startTime;
     console.log(`Test completed in ${duration}ms`);
+    
     if (result.success) {
       console.log(`Success, Found ${result.items.length} items`);
 
