@@ -11,8 +11,6 @@ const VideoEndPoint = "https://www.googleapis.com/youtube/v3/videos";
  * all the api return will be handle by one type
  *
  */
-
-
 type youtubeApiError = {
   message: string;
   status: number;
@@ -88,8 +86,6 @@ export async function getChannelByToken(
 
   const MAX_RESULT = 50;
   const API_PARTS = "id,snippet,contentDetails";
-  const { YOUTUBE_API_KEY } = process.env;
-  //!API key 빼고 에러 나는지 한 번 체크해보기
   // const url = `${ChannelEndPoint}?part=${API_PARTS}&mine=true&key=${YOUTUBE_API_KEY}`;
   let nextPageToken = "";
   const channelData: channelItems[] = [];
