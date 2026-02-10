@@ -1,17 +1,17 @@
-import { PrismaClient } from "@/lib/generated/prisma/client";
-
 //TODO: 싱글톤으로 교체하기
 
-const newInstance = () => new PrismaClient();
+import { prisma } from "@/prisma/prisma";
 
-// biome-ignore lint/suspicious/noShadowRestrictedNames: for too many connecting problem
-declare const globalThis: {
-  prismaGlobal: ReturnType<typeof newInstance>;
-} & typeof global;
+// const newInstance = () => new PrismaClient();
 
-const prisma = globalThis.prismaGlobal ?? newInstance();
+// // biome-ignore lint/suspicious/noShadowRestrictedNames: for too many connecting problem
+// declare const globalThis: {
+//   prismaGlobal: ReturnType<typeof newInstance>;
+// } & typeof global;
 
-export default prisma;
+// const prisma = globalThis.prismaGlobal ?? newInstance();
+
+// export default prisma;
 
 //TODO: 중복 id체크하기
 export const findMemberByEmail = async (

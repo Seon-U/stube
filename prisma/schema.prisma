@@ -4,9 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider          = "mysql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider = "mysql"
 }
 
 model channel {
@@ -20,6 +18,7 @@ model channel {
   lastSelected   Boolean
   refreshToken   String?
   title          String?
+  syncAt         DateTime?
   member         member     @relation(fields: [memberId], references: [id], onDelete: Cascade, map: "fk_member_channel")
   playlist       playlist[]
 
@@ -67,7 +66,7 @@ model video {
   updatedAt    DateTime? @db.DateTime(0)
   listApiId    String    @unique
   position     Int
-  videoApiId   String    
+  videoApiId   String
   playlist     playlist  @relation(fields: [playlistId], references: [id], onDelete: Cascade, map: "fk_playlist_video")
 
   @@index([playlistId], map: "id_idx")
